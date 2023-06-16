@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html>
+<head>
+    <title>Рабочий день</title>
+</head>
+<body>
+    <form>
+        <label for="date-time">Введите дату и время:</label>
+        <input type="text" id="date-time" name="date-time" placeholder="дд.мм.гггг чч:мм:сс">
+
+        <button type="submit">Получить рабочий день</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        const form = document.querySelector('form');
+        const input = document.querySelector('#date-time');
+        const result = document.querySelector('#result');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const dateCreate = input.value.trim();
+            if (dateCreate === '') {
+                result.innerHTML = 'Введите дату и время';
+                return;
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/get-work-day.php'); // URL-адрес обработчика запроса
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send(`dateCreate=${dateCreate}`);
+
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    result.innerHTML = xhr.responseText;
+                } else {
+                    result.innerHTML = `Ошибка ${xhr.status}: ${xhr.statusText}`;
+                }
+            };
+        });
+    </script>
+</body>
+</html>
+</body>
+</html>
